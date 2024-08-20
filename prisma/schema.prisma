@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model InvoiceSummary {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  fileName  String   @unique
+  summary   String
+  comments  Comments[]
+}
+
+model Comments {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  comment   String
+  invoice   InvoiceSummary @relation(fields: [invoiceId], references: [id])
+  invoiceId String @db.ObjectId
+}
