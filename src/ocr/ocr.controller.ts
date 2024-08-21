@@ -9,7 +9,8 @@ import {
   Param,
   Res,
   HttpException,
-  HttpStatus
+  HttpStatus,
+  Body
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { OcrService } from './ocr.service'
@@ -79,7 +80,7 @@ export class OcrController {
     }
 
     try {
-      analysisResult = 'analysis result 123445'
+      analysisResult = await this.ocrService.analyzeDocument(bucketName, documentKey)
     } catch (error) {
       throw new InternalServerErrorException('Failed to analyze the document', error.message)
     }
@@ -99,6 +100,30 @@ export class OcrController {
 
     return {
       msg: 'Operation completed successfully',
+      res: analysisResult
+    }
+  }
+
+  @Post('analyze')
+  async analyzeUploadedDocument(
+    @Body('documentKey') documentKey: string
+  ) {
+    const bucketName = process.env.S3_BUCKET_NAME
+    let analysisResult = null
+
+    if (!documentKey) {
+      throw new BadRequestException('Document key is required')
+    }
+
+    try {
+      documentKey = `invoice-originals/${documentKey}`
+      analysisResult = await this.ocrService.analyzeDocument(bucketName, documentKey)
+    } catch (error) {
+      throw new InternalServerErrorException('Failed to analyze the document', error.message)
+    }
+
+    return {
+      msg: 'Document analyzed successfully',
       res: analysisResult
     }
   }

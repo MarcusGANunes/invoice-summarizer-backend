@@ -5,6 +5,7 @@ import { AppService } from './app.service'
 import { OcrModule } from './ocr/ocr.module'
 import { OpenaiModule } from './openai/openai.module'
 import { DbModule } from './db/db.module'
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -13,7 +14,8 @@ import { DbModule } from './db/db.module'
     }),
     OcrModule,
     OpenaiModule,
-    DbModule
+    DbModule,
+    HttpModule
   ],
   controllers: [AppController],
   providers: [AppService],
