@@ -18,11 +18,13 @@ export class OcrService {
   private textractClient: TextractClient
   private s3Client: S3Client
   private httpService: HttpService
+  private baseUrl: string
 
   constructor() {
     this.textractClient = new TextractClient({ region: process.env.AWS_REGION })
     this.s3Client = new S3Client({ region: process.env.AWS_REGION })
     this.httpService = new HttpService()
+    this.baseUrl = process.env.BACK_BASE_URL
   }
 
   async uploadDocumentToS3(bucketName: string, documentKey: string, fileBuffer: Buffer): Promise<void> {
@@ -61,7 +63,7 @@ export class OcrService {
         const command = new AnalyzeDocumentCommand(params)
         const response = await this.textractClient.send(command)
         const text = this.extractText(response.Blocks || [])
-        const url = process.env.BASE_URL + '/openai/mount-summary'
+        const url = this.baseUrl + '/openai/mount-summary'
         try {
           const summaryResponse = await firstValueFrom(
             this.httpService
@@ -74,7 +76,6 @@ export class OcrService {
           throw error
         }
     } catch (error) {
-        console.log(error)
         throw new Error('Failed to analyze document')
     }
   }
