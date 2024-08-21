@@ -41,7 +41,6 @@ export class OpenaiService {
       
       Informações do Beneficiário:\n
       - Nome: [Nome do Beneficiário]\n
-      - CPF/CNPJ: [CPF/CNPJ do Beneficiário]\n
       - Agência/Código do Beneficiário: [Agência/Código do Cedente]\n
       - Banco: [Banco do Beneficiário]\n
       - Código do Banco: [Código do Banco]\n
