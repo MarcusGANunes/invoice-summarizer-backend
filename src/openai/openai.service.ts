@@ -7,7 +7,7 @@ export class OpenaiService {
 
   constructor() {
     this.openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: process.env.OPENAI_API_KEY
     })
   }
 
@@ -22,9 +22,8 @@ export class OpenaiService {
           { role: 'user', content: promptText },
         ],
         max_tokens: 1000,
-        temperature: 0.7,
+        temperature: 0.7
       })
-
       const generatedPrompt = response.choices[0].message.content.trim()
       return generatedPrompt
     } catch (error) {
@@ -42,8 +41,8 @@ export class OpenaiService {
       
       Informações do Beneficiário:\n
       - Nome: [Nome do Beneficiário]\n
-      - CNPJ: [CNPJ do Beneficiário]\n
-      - Agência/Código do Cedente: [Agência/Código do Cedente]\n
+      - CPF/CNPJ: [CPF/CNPJ do Beneficiário]\n
+      - Agência/Código do Beneficiário: [Agência/Código do Cedente]\n
       - Banco: [Banco do Beneficiário]\n
       - Código do Banco: [Código do Banco]\n
       
@@ -58,9 +57,8 @@ export class OpenaiService {
       - Data de Vencimento: [Data de Vencimento]\n
       
       A resposta deve seguir exatamente esse layout, sem alterações ou adições, apenas as quebras de linha feitas.
-      `;
+      `
       
-
       const response = await this.openai.chat.completions.create({
         model: 'gpt-4o-mini',
         messages: [
@@ -74,7 +72,7 @@ export class OpenaiService {
 
     } catch (error) {
       console.error('Erro ao gerar o resumo:', error)
-      throw error;
+      throw error
     }
   }
 }
