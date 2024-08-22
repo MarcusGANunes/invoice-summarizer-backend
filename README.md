@@ -1,73 +1,42 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Backend Deployment Instructions and Configuration
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+This guide provides a detailed process to configure, deploy, and set up the backend environment, including creating a MongoDB Atlas account, setting up the database, AWS IAM user creation, S3 bucket configuration, and environment variables setup, specifically for deployment on Render.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Prerequisites:
+- An AWS account with sufficient permissions
+- An account on [Render](https://render.com/) (for deploying the backend)
+- An account on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) (for hosting the database)
 
-## Description
+## 1. MongoDB Atlas Configuration
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### 1.1. Create a MongoDB Atlas Account
+1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) and sign up for a free account.
+2. After signing up, log in to the MongoDB Atlas dashboard.
 
-## Installation
+### 1.2. Create a New Cluster
+1. Click on **Build a Cluster**.
+2. Choose a cloud provider (e.g., AWS) and the region closest to your deployment location.
+3. Select the cluster tier (e.g., the free `M0` tier for development).
+4. Click **Create Cluster**. This might take a few minutes.
 
-```bash
-$ yarn install
-```
+### 1.3. Create a Database User
+1. In your MongoDB Atlas dashboard, go to the **Database Access** section.
+2. Click **Add New Database User**.
+3. Enter a username and password.
+4. Set the user’s privileges to **Read and write to any database**.
+5. Click **Add User**.
 
-## Running the app
+### 1.4. Configure Network Access
+1. Go to the **Network Access** section in the MongoDB Atlas dashboard.
+2. Click **Add IP Address**.
+3. To allow access from anywhere, add `0.0.0.0/0`. (For production, restrict access to specific IPs.)
+4. Click **Confirm**.
 
-```bash
-# development
-$ yarn run start
-
-# watch mode
-$ yarn run start:dev
-
-# production mode
-$ yarn run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ yarn run test
-
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+### 1.5. Get the Connection String
+1. In your MongoDB Atlas dashboard, go to the **Clusters** section.
+2. Click **Connect** next to your cluster.
+3. Choose **Connect Your Application**.
+4. Copy the connection string provided, which will look like this:
+   ```bash
+   mongodb+srv://<username>:<password>@cluster0.mongodb.net/<database>?retryWrites=true&w=majority
+  ```
