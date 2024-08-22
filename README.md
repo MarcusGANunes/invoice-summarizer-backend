@@ -91,6 +91,7 @@ This guide provides a detailed process to configure, deploy, and set up the back
    - `AWS_ACCESS_KEY_ID=<key-id>`
    - `AWS_REGION=<region>`
    - `AWS_SECRET_ACCESS_KEY=<secret-key>`
+   - `S3_BUCKET_NAME=<bucket-name>`
 
 2. Add the MongoDB variable:
 
